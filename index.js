@@ -25,14 +25,6 @@ io.of('/temperature').on('connection', (socket) => {
         basement: 68+parseFloat((Math.random()*4).toFixed(2)),
     }
 
-
-    // let temps = {
-    //     bedroom: 68+Math.round(4/100)*100,
-    //     living: 68+Math.round(4/100)*100,
-    //     kitchen: 68+Math.round(4/100)*100,
-    //     basement: 68+Math.round(4/100)*100,
-    // }
-
     const interval = setInterval(() => {
 
         // Increase each temperature at random by a value between -0.5 and 0.5,
