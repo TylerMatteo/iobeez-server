@@ -2,10 +2,6 @@ const app = require('express')()
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-app.get('/thingy', function(req, res){
-    res.json({foo: "bar"})
-  });
-
 // Ideally I would expose endpoints for each temperature individually but for the
 // purposes of this dashboard we can lump them into the same socket
 io.of('/temperature').on('connection', (socket) => {
@@ -73,5 +69,5 @@ io.of('/smoke').on('connection', (socket) => {
 })
 
 http.listen(3000, () => {
-    console.log('listening on *:3000');
+    console.log('listening on port 3000');
 });
