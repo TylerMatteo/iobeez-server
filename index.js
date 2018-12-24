@@ -4,10 +4,6 @@ app.use(cors());
 
 const http = require('http').Server(app);
 var io = require('socket.io')(http, {origins:'*:*'});
-io.configure(function () {  
-    io.set("transports", ["xhr-polling"]); 
-    io.set("polling duration", 10); 
-});
 
 // Ideally I would expose endpoints for each temperature individually but for the
 // purposes of this dashboard we can lump them into the same socket
