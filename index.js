@@ -3,8 +3,8 @@ const cors = require('cors');
 app.use(cors());
 
 const http = require('http').Server(app);
-const io = require('socket.io')(http, { origins: '*:*'});
-
+const io = require('socket.io')(http);
+io.set( 'origins', '*:*' );
 
 // Ideally I would expose endpoints for each temperature individually but for the
 // purposes of this dashboard we can lump them into the same socket
