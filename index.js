@@ -2,10 +2,6 @@ const app = require('express')()
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-// io.on('connection', (socket) => {
-//     console.log('connected!');
-// });
-
 app.get('/thingy', function(req, res){
     res.json({foo: "bar"})
   });
@@ -31,7 +27,6 @@ io.of('/temperature').on('connection', (socket) => {
         // making sure to always keep it between 68 and 72
         for(const room in temps){
             let val = parseFloat((Math.random()-0.5).toFixed(2));
-            // console.log(val);
             if(temps[room] + val > 72 || temps[room] + val < 68 ){
                 temps[room] = parseFloat((temps[room] - val).toFixed(2));
             } else {
@@ -39,16 +34,42 @@ io.of('/temperature').on('connection', (socket) => {
             } 
         }
 
-        console.log(temps.bedroom);
         socket.emit('update', {
             timestamp: Date.now(),
             temperatures: temps
         });
-    }, 1000)
+    }, 3000)
 
     socket.on('disconnect', () => {
         clearInterval(interval);
     })
+})
+
+io.of('/smoke').on('connection', (socket) => {
+    
+    let detectors = {
+        hallway: {
+            id: "hallway",
+            status: "inactive"
+        },
+        bedroom: {
+            id: "bedroom",
+            status: "inactive"
+        },
+        dining: {
+            id: "dining",
+            status: "inactive"
+        }
+    }
+
+    socket.emit('update', detectors);
+
+    socket.on("set_detector", (data) => {
+        detectors[data.room].status = data.status;
+
+        socket.emit('update', detectors);
+    })
+
 })
 
 http.listen(3000, () => {
